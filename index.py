@@ -142,7 +142,8 @@ def print_ascii_matrix(ascii_matrix: Matrix, fg="white", bg="black", *, stretch=
         # Add little delay after every row
         # sleep(.05)
 
-img = Image.open("./images/ascii-pineapple.jpg")
+# img = Image.open("./images/ascii-pineapple.jpg")
+img = Image.open("./images/zebra.jpg")
 
 pixel_matrix = get_pixel_matrix(img)
 intensity_matrix = get_intensity_matrix(pixel_matrix, "perceived")
@@ -151,4 +152,4 @@ intensity_matrix = normalize_intensity_matrix(intensity_matrix)
 # intensity_matrix = invert_intensity_matrix(intensity_matrix)
 ascii_matrix = intensity_to_ascii(intensity_matrix, ASCII_CHARS)
 
-print_ascii_matrix(ascii_matrix, "green", stretch=2)
+print_ascii_matrix(ascii_matrix, stretch=2)
