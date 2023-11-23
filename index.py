@@ -2,6 +2,8 @@ from typing import List
 from PIL import Image
 from time import sleep
 from termcolor import cprint
+import argparse
+from pathlib import Path
 
 ASCII_CHARS = '`^",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$'
 MAX_PIXEL_VALUE = 255
@@ -128,7 +130,9 @@ def intensity_to_ascii(intensity_matrix: Matrix, ascii_chars: str) -> Matrix:
     return ascii_matrix
 
 
-def print_ascii_matrix(ascii_matrix: Matrix, fg="white", bg="black", *, stretch=3) -> None:
+def print_ascii_matrix(
+    ascii_matrix: Matrix, fg="white", bg="black", *, stretch=3
+) -> None:
     """
     Print the ascii matrix.
     """
@@ -137,13 +141,38 @@ def print_ascii_matrix(ascii_matrix: Matrix, fg="white", bg="black", *, stretch=
         text = "".join([char * stretch for char in row])
 
         # Print the ascii text
-        cprint(text, fg, f"on_{bg}")
+        cprint(text, fg, 'on_black')
 
         # Add little delay after every row
         # sleep(.05)
 
-# img = Image.open("./images/ascii-pineapple.jpg")
-img = Image.open("./images/zebra.jpg")
+
+parser = argparse.ArgumentParser()
+
+# Image file to process
+parser.add_argument("path")
+
+# Parse arguments sent to the program
+args = parser.parse_args()
+
+
+file_path = Path(args.path)
+
+if not file_path.exists():
+    print("The image file does not exist.")
+    raise SystemExit(1)
+
+if not file_path.is_file():
+    print("Path must be a file.")
+    raise SystemExit(1)
+
+if file_path.suffix not in [".jpg", ".jpeg"]:
+    print("File must be a jpeg image.")
+    raise SystemExit(1)
+
+
+# Open image path passed
+img = Image.open(file_path)
 
 pixel_matrix = get_pixel_matrix(img)
 intensity_matrix = get_intensity_matrix(pixel_matrix, "perceived")
