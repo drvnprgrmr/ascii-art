@@ -131,7 +131,7 @@ def intensity_to_ascii(intensity_matrix: Matrix, ascii_chars: str) -> Matrix:
 
 
 def print_ascii_matrix(
-    ascii_matrix: Matrix, fg="white", bg="black", *, stretch=3
+    ascii_matrix: Matrix, fg: str, bg: str, *, stretch=3
 ) -> None:
     """
     Print the ascii matrix.
@@ -141,7 +141,7 @@ def print_ascii_matrix(
         text = "".join([char * stretch for char in row])
 
         # Print the ascii text
-        cprint(text, fg, 'on_black')
+        cprint(text, fg, f"on_{bg}")
 
         # Add little delay after every row
         # sleep(.05)
@@ -151,6 +151,9 @@ parser = argparse.ArgumentParser()
 
 # Image file to process
 parser.add_argument("path")
+
+parser.add_argument("--fg", action="store", default="white")
+parser.add_argument("--bg", action="store", default="black")
 
 # Parse arguments sent to the program
 args = parser.parse_args()
@@ -181,4 +184,4 @@ intensity_matrix = normalize_intensity_matrix(intensity_matrix)
 # intensity_matrix = invert_intensity_matrix(intensity_matrix)
 ascii_matrix = intensity_to_ascii(intensity_matrix, ASCII_CHARS)
 
-print_ascii_matrix(ascii_matrix, stretch=2)
+print_ascii_matrix(ascii_matrix, args.fg, args.bg, stretch=2)
